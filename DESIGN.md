@@ -14,12 +14,13 @@ A complete React long-scroll website inspired by the supplied scrapbook referenc
 
 ### Phase 3 — Scrapbook memories
 - Filterable Polaroid collage with sample photographs, paper tape, captions, and hand-drawn flourishes.
-- A featured "A Scrapbook of Us" panel uses the supplied pink scrapbook artwork at `public/assets/scrapbook-cover.png`.
-- Replace image IDs in the `photos` array in `src/App.jsx` with your own image IDs or local image paths. Keep each item’s `category` to preserve filtering.
+- A featured "A Scrapbook of Us" panel uses the supplied scrapbook artwork at `public/assets/scrapbook-cover.jpg`.
+- Add your photos as `memory-01.jpg` through `memory-09.jpg` in `public/assets/memories/`. The nine scrapbook slots load these files automatically; the first six keep their sample photos until you add yours. Gallery filters show only matching categories. Edit captions and categories in the `photos` array in `src/App.jsx`.
 
 ### Phase 4 — Midnight moments and paper poems
 - Six minimal cards on the starry dark section transition into cream-paper poetry notes.
 - Tamil text is marked with `lang="ta"` and uses the Noto Serif Tamil typeface. Replace the example lines directly in `src/App.jsx`.
+- The "Open When You Miss Me" discovery card links to a website in a new tab; edit `missYouWebsiteUrl` in `src/App.jsx` to change its destination.
 
 ### Phase 5 — Personal discoveries
 - Functional random-memory rotation, secret-message reveal, and an accessible miss-you letter overlay.

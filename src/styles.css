@@ -169,7 +169,6 @@ img { display: block; width: 100%; }
 .petal { position: absolute; color: #c9878e; }
 .petal-one { top: 10px; right: 12%; font-size: 28px; }
 .petal-two { right: 15%; bottom: 17px; color: #aa91a5; }
-
 .discoveries { padding: 16px 0 98px; background-image: radial-gradient(ellipse at 45% 30%, rgb(255 255 255 / 58%), transparent 53%), repeating-linear-gradient(0deg, rgb(126 93 78 / 1.5%) 0, rgb(126 93 78 / 1.5%) 1px, transparent 1px, transparent 5px); }
 .discovery-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; grid-template-rows: 230px 208px; gap: 15px; }
 .discovery-card { position: relative; overflow: hidden; padding: 19px 21px; border: 1px solid rgb(122 92 91 / 13%); border-radius: 12px; background: rgb(255 252 248 / 75%); box-shadow: 0 8px 22px rgb(62 46 48 / 8%); }
@@ -191,6 +190,9 @@ img { display: block; width: 100%; }
 .random-card { grid-column: 2; grid-row: 1 / 3; background: #121d34; color: #faf5ef; text-align: center; }
 .random-card h2 { font-size: 28px; }
 .random-card h2 span { color: #e8b4b6; }
+.random-doodle { position: absolute; right: 12px; bottom: 21px; left: 12px; color: #e2c4c5; font: 19px/1 var(--script); opacity: .75; }
+.random-doodle span:first-child { margin-right: 7px; color: #e5b89f; }
+.random-doodle span:last-child { margin-left: 7px; color: #e6aeb1; }
 .random-photo { width: min(200px, 80%); height: 138px; margin: 12px auto 7px; padding: 6px; background: #fffdfa; box-shadow: 0 5px 13px #080e1c; transform: rotate(-3deg); }
 .random-photo::after { display: block; width: 100%; height: 100%; background: url("https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=520&q=82") center 44% / cover; content: ""; }
 .random-caption { margin: 15px 0 10px; color: #f2dfe0; font: 20px/1.05 var(--script); }
@@ -205,14 +207,26 @@ img { display: block; width: 100%; }
 .secret-button { display: block; margin: 0 auto; padding: 10px 24px; border: 0; background: #e8b8c0; color: #38313f; cursor: pointer; font: 17px var(--script); clip-path: polygon(3% 10%, 97% 0, 100% 84%, 5% 100%, 0 40%); transform: rotate(-2deg); }
 .secret-message { position: absolute; z-index: 2; inset: 0; display: none; align-items: center; justify-content: center; margin: 0; padding: 35px; background: #f3e4e4; color: #4c4351; font: 24px/1.15 var(--script); text-align: center; }
 .secret-card.is-open .secret-message { display: flex; }
-.miss-card { grid-column: 3; grid-row: 1 / 3; border: 1px solid rgb(255 255 255 / 10%); background: linear-gradient(152deg, #151d33, #101728 75%); color: #f7f0ed; cursor: pointer; text-align: left; }
+.secret-doodle { position: absolute; right: 12px; bottom: 20px; left: 12px; color: #936b7c; font: 18px/1 var(--script); text-align: center; }
+.secret-doodle span { padding: 0 5px; color: #c78491; }
+.miss-card { grid-column: 3; grid-row: 1 / 3; border: 1px solid rgb(255 255 255 / 10%); background: radial-gradient(ellipse at 76% 50%, rgb(200 139 157 / 11%), transparent 42%), linear-gradient(152deg, #151d33, #101728 75%); color: #f7f0ed; text-align: left; }
 .miss-card::before, .miss-card::after { position: absolute; color: #e2b998; content: "✧"; opacity: .72; }
 .miss-card::before { top: 16%; right: 19%; font-size: 13px; }
 .miss-card::after { bottom: 18%; left: 16%; font-size: 18px; }
+.miss-card > .envelope, .miss-card > .miss-title, .miss-card-note, .miss-card-actions { position: relative; z-index: 1; }
 .envelope { display: block; margin-bottom: 9px; color: #e7c2b4; font-size: 24px; }
 .miss-title { display: block; max-width: 170px; font: 500 26px/1.15 var(--script); }
-.miss-heart { position: absolute; top: 20px; right: 19px; color: #e6aeb1; font-size: 20px; }
-.miss-hint { position: absolute; bottom: 18%; left: 21%; color: #e4c7c5; font: 19px var(--script); transform: rotate(-7deg); }
+.miss-heart { position: absolute; z-index: 1; top: 20px; right: 19px; color: #e6aeb1; font-size: 20px; }
+.miss-art { position: absolute; top: 50%; right: 15%; color: rgb(230 174 177 / 17%); font: 150px/.8 var(--script); pointer-events: none; transform: translateY(-50%) rotate(9deg); }
+.miss-art > span { position: absolute; top: 45%; left: 52%; color: rgb(230 174 177 / 35%); font-size: .42em; transform: rotate(-16deg); }
+.miss-card-note { max-width: 225px; margin: 13px 0 0; color: #ddc7d0; font: 20px/1.15 var(--script); }
+.miss-card-actions { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; margin-top: 20px; }
+.miss-website-link { display: inline-flex; align-items: center; gap: 9px; padding: 10px 15px; border: 1px solid rgb(237 205 201 / 48%); border-radius: 999px; background: rgb(255 255 255 / 7%); color: #fff3ed; font: 18px/1 var(--script); transition: background .2s, border-color .2s, transform .2s; }
+.miss-website-link:hover, .miss-website-link:focus-visible { transform: translateY(-2px); border-color: #edc5c2; background: rgb(255 255 255 / 13%); }
+.miss-website-link span, .miss-letter-button span { color: #e6aeb1; }
+.miss-letter-button { padding: 2px 0; border: 0; background: transparent; color: #e4c7c5; cursor: pointer; font: 18px/1.1 var(--script); text-decoration: underline; text-decoration-color: rgb(228 199 197 / 45%); text-underline-offset: 4px; }
+.miss-letter-button:hover, .miss-letter-button:focus-visible { color: #fff3ed; }
+.miss-hint { position: absolute; z-index: 1; right: 18px; bottom: 18px; color: rgb(228 199 197 / 78%); font: 17px var(--script); transform: rotate(-5deg); }
 
 .letter-backdrop { position: fixed; z-index: 40; inset: 0; display: grid; place-items: center; padding: 20px; background: rgb(11 17 29 / 66%); backdrop-filter: blur(4px); }
 .letter-dialog { position: relative; width: min(480px, 100%); }
@@ -266,7 +280,42 @@ img { display: block; width: 100%; }
 .site-footer a span { color: var(--rose); }
 .site-footer p { margin: 0; color: #8c8281; font-size: 10px; letter-spacing: .05em; }
 
+/* Memory gallery slots use local files and keep empty photos visibly labeled. */
+.polaroid-field { min-height: 850px; padding: 20px 0 55px; }
+.polaroid-field .polaroid { position: absolute; display: block; height: auto; min-width: 0; padding: 9px 9px 0; }
+.polaroid-field .polaroid img, .polaroid-field .memory-placeholder { width: 100%; height: auto; aspect-ratio: 1 / .9; object-fit: cover; }
+.memory-placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 12px; background: linear-gradient(145deg, #f7e9e2, #ece1e8); color: #977784; text-align: center; }
+.memory-placeholder > span { color: #bf858d; font-size: 33px; }
+.memory-placeholder small { font-size: 10px; line-height: 1.7; }
+.memory-placeholder strong { color: #625260; font-size: 11px; font-weight: 600; }
+.polaroid-field .polaroid figcaption { min-height: 45px; padding: 9px 3px; overflow-wrap: anywhere; white-space: normal; }
+.polaroid-field .field-scribble, .polaroid-field .flower-doodle { position: absolute; }
+.polaroid-field .memory-01 { top: 28px; left: 18%; z-index: 2; width: 235px; transform: rotate(-6deg); }
+.polaroid-field .memory-02 { top: 18px; left: 56%; z-index: 3; width: 205px; transform: rotate(4deg); }
+.polaroid-field .memory-03 { top: 140px; right: 0; z-index: 1; width: 210px; transform: rotate(6deg); }
+.polaroid-field .memory-04 { top: 285px; left: 1%; z-index: 2; width: 196px; transform: rotate(-8deg); }
+.polaroid-field .memory-05 { top: 300px; left: 37%; z-index: 3; width: 202px; transform: rotate(3deg); }
+.polaroid-field .memory-06 { top: 390px; right: 13%; z-index: 2; width: 184px; transform: rotate(-5deg); }
+.polaroid-field .memory-07 { top: 505px; left: 13%; z-index: 1; width: 190px; transform: rotate(5deg); }
+.polaroid-field .memory-08 { top: 555px; left: 48%; z-index: 2; width: 205px; transform: rotate(-3deg); }
+.polaroid-field .memory-09 { top: 170px; left: 39%; z-index: 1; width: 182px; transform: rotate(-4deg); }
+.polaroid-field .polaroid:hover { z-index: 5; transform: translateY(-7px) rotate(0) scale(1.035); }
+.polaroid-field .polaroid.is-hidden { display: none; }
+
 @media (max-width: 800px) {
+  .polaroid-field { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px 16px; min-height: 0; padding: 18px 4px 60px; }
+  .polaroid-field .polaroid { position: relative; inset: auto; z-index: auto; width: 100%; }
+  .polaroid-field .polaroid:nth-of-type(odd) { transform: rotate(-2deg); }
+  .polaroid-field .polaroid:nth-of-type(even) { transform: rotate(2deg); }
+  .polaroid-field .polaroid:hover { z-index: 4; transform: translateY(-5px) rotate(0) scale(1.025); }
+}
+
+@media (max-width: 700px) {
+  .polaroid-field { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 12px; min-height: 0; padding: 12px 4px 52px; }
+}
+
+@media (max-width: 800px) {
+  .polaroid-field { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .section-shell, .night-shell { width: min(calc(100% - 48px), 640px); }
   .hero { min-height: 670px; height: 90svh; max-height: 850px; }
   .hero-photo { background-position: 58% center; }
@@ -301,6 +350,7 @@ img { display: block; width: 100%; }
 }
 
 @media (max-width: 560px) {
+  .polaroid-field { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 14px; padding: 12px 4px 55px; }
   html { scroll-padding-top: 60px; }
   .site-header { height: 62px; padding: 0 21px; }
   .wordmark { font-size: 23px; }
@@ -389,7 +439,7 @@ img { display: block; width: 100%; }
   .secret-button { padding: 9px 14px; font-size: 15px; }
   .miss-card { grid-column: 2; grid-row: 3; padding: 14px 12px; }
   .miss-title { font-size: 22px; }
-  .miss-hint { bottom: 19%; left: 12%; right: auto; font-size: 16px; }
+  .miss-hint { bottom: 16px; right: 12px; left: auto; font-size: 15px; }
   .envelope { margin-bottom: 5px; }
   .timeline-top { padding: 72px 0 17px; }
   .timeline-heading { align-items: flex-start; }
@@ -469,6 +519,7 @@ img { display: block; width: 100%; }
   .random-card { min-height: 290px; }
   .random-photo { width: min(240px, 78%); }
   .secret-card, .miss-card { min-height: 185px; }
+  .miss-art { right: 12%; font-size: 112px; }
   .timeline-body { width: calc(100% - 36px); padding-top: 24px; }
   .timeline-rail { top: 23px; bottom: 110px; left: 16px; transform: none; }
   .timeline-start, .timeline-end { left: 16px; transform: translateX(-50%); }
@@ -489,6 +540,7 @@ img { display: block; width: 100%; }
 }
 
 @media (max-width: 420px) {
+  .polaroid-field { gap: 16px 12px; }
   html, body { min-width: 320px; }
   .section-shell, .night-shell { width: calc(100% - 32px); }
   .hero { min-height: 640px; }

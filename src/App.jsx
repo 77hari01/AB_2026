@@ -1,48 +1,74 @@
 import React, { useRef, useState } from "react";
 
+const missYouWebsiteUrl = "https://example.com";
+
 const photos = [
   {
     caption: "That sunset... ♡",
     category: "special",
-    image: "photo-1516589178581-6cd7833ae3b2",
+    filename: "memory-01.jpg",
+    image: "/assets/memories/memory-01.jpg",
+    fallback: imageUrl("photo-1516589178581-6cd7833ae3b2"),
     alt: "A couple together in warm evening light",
-    className: "photo-sunset",
+    className: "memory-01",
   },
   {
     caption: "Forever & always ♡",
     category: "us",
-    image: "photo-1518199266791-5375a83190b7",
+    filename: "memory-02.jpg",
+    image: "/assets/memories/memory-02.jpg",
+    fallback: imageUrl("photo-1518199266791-5375a83190b7"),
     alt: "Two hands held together",
-    className: "photo-hands",
+    className: "memory-02",
   },
   {
     caption: "Our little world ♡",
     category: "random",
-    image: "photo-1500375592092-40eb2168fd21",
+    filename: "memory-03.jpg",
+    image: "/assets/memories/memory-03.jpg",
+    fallback: imageUrl("photo-1500375592092-40eb2168fd21"),
     alt: "A quiet blue sea beneath an open sky",
-    className: "photo-sea",
+    className: "memory-03",
   },
   {
     caption: "No plans, just us",
     category: "random",
-    image: "photo-1522673607200-164d1b6ce486",
+    filename: "memory-04.jpg",
+    image: "/assets/memories/memory-04.jpg",
+    fallback: imageUrl("photo-1522673607200-164d1b6ce486"),
     alt: "A couple walking together",
-    className: "photo-walk",
+    className: "memory-04",
   },
   {
     caption: "Late night talks ♡",
     category: "special",
-    image: "photo-1495474472287-4d71bcdd2085",
+    filename: "memory-05.jpg",
+    image: "/assets/memories/memory-05.jpg",
+    fallback: imageUrl("photo-1495474472287-4d71bcdd2085"),
     alt: "Coffee and a slow morning together",
-    className: "photo-coffee",
+    className: "memory-05",
   },
   {
     caption: "For no reason at all",
     category: "us",
-    image: "photo-1490750967868-88aa4486c946",
+    filename: "memory-06.jpg",
+    image: "/assets/memories/memory-06.jpg",
+    fallback: imageUrl("photo-1490750967868-88aa4486c946"),
     alt: "Soft flowers in afternoon light",
-    className: "photo-flowers",
+    className: "memory-06",
   },
+  ...Array.from({ length: 3 }, (_, index) => {
+    const number = index + 7;
+    const filename = `memory-${String(number).padStart(2, "0")}.jpg`;
+    return {
+      caption: `A little memory #${String(number).padStart(2, "0")}`,
+      category: ["special", "random", "us"][index % 3],
+      filename,
+      image: `/assets/memories/${filename}`,
+      alt: `Photo memory ${number}`,
+      className: `memory-${String(number).padStart(2, "0")}`,
+    };
+  }),
 ];
 
 const momentCards = [
@@ -50,7 +76,7 @@ const momentCards = [
   ["〰", "Your Voice", "உன் குரல் கேட்டாலே\nமனம் அமைதியாகிறது.", "My favourite notification."],
   ["♡", "Your Little Habits", "நீ செய்யும் சின்னச் சின்ன\nவிஷயங்கள் எல்லாம்...", "The little things you don’t even realize you do."],
   ["✿", "The Way You Care", "என்னை நினைக்கும்\nஉன் மனசு...", "You always think about others."],
-  ["◉", "Your Eyes", "சொல்லாத கதைகள்\nஅதில் நிறையவே உண்டு.", "They say everything without words."],
+  ["◉", "Your Eyes", "இரு விழிகளினுள் தொலைந்த\nது என் இதயம் ❤️", "They say everything without words."],
   ["✧", "Just You", "நீயாக இருப்பதே\nஎனக்குப் பிடித்தது.", "Because you are you, and that’s enough."],
 ];
 
@@ -104,6 +130,32 @@ function imageUrl(id, width = 760) {
   return `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${width}&q=85`;
 }
 
+function MemoryImage({ photo }) {
+  const [source, setSource] = useState(photo.image);
+  const [missing, setMissing] = useState(false);
+
+  if (missing) {
+    return (
+      <div className="memory-placeholder" role="img" aria-label={`Add ${photo.filename} to show this photo`}>
+        <span aria-hidden="true">♡</span>
+        <small>Save photo as<br /><strong>{photo.filename}</strong></small>
+      </div>
+    );
+  }
+
+  return (
+    <img
+      src={source}
+      alt={photo.alt}
+      loading="lazy"
+      onError={() => {
+        if (photo.fallback && source !== photo.fallback) setSource(photo.fallback);
+        else setMissing(true);
+      }}
+    />
+  );
+}
+
 function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const links = ["Home", "Memories", "Poems", "Moments", "Timeline"];
@@ -140,7 +192,7 @@ function Hero() {
       <div className="hero-stars" aria-hidden="true">·　✦　　　·　　　　✧　　·</div>
       <div className="hero-copy">
         <p className="eyebrow light-eyebrow">a little world, just for us</p>
-        <h1 id="hero-title">En Uyir Nee... <span>♡</span></h1>
+        <h1 id="hero-title">Happy Birthday My Kulliki... <span>❤️</span></h1>
         <p className="tamil hero-tamil" lang="ta">உன்னோடு இருக்கும் ஒவ்வொரு நொடியும்<br />ஒரு அழகான கதை...</p>
         <p className="hero-intro">Not just a love story,<br />but a little world that belongs to us.</p>
         <a className="button button-light" href="#memories">Explore Our World <span aria-hidden="true">→</span></a>
@@ -180,7 +232,7 @@ function Memories() {
           </div>
           <img
             className="scrapbook-image"
-            src="/assets/scrapbook-cover.png"
+            src="/assets/scrapbook-cover.jpg"
             alt="A pink scrapbook collage of couple photographs, handwritten love notes, and shared memories"
             loading="lazy"
           />
@@ -205,8 +257,8 @@ function Memories() {
                 className={`polaroid ${photo.className}${filter !== "all" && filter !== photo.category ? " is-hidden" : ""}`}
                 key={photo.className}
               >
-                {(index === 0 || index === 2 || index === 4) && <span className={`tape tape-${index}`} />}
-                <img src={imageUrl(photo.image)} alt={photo.alt} loading="lazy" />
+                {index % 3 !== 1 && <span className={`tape tape-${index}`} />}
+                <MemoryImage photo={photo} />
                 <figcaption>{photo.caption}</figcaption>
               </figure>
             ))}
@@ -265,16 +317,16 @@ function Poems() {
           <article className="poem-note poem-note-main">
             <span className="tape tape-cream" />
             <p className="poem-mark">“</p>
-            <p className="tamil poem-tamil" lang="ta">நீ அருகில் இருந்தால்<br />வார்த்தைகள் தேவையில்லை...<br />அமைதிக்குக் கூட<br />ஒரு அர்த்தம் கிடைக்கிறது. <span>♡</span></p>
+            <p className="tamil poem-tamil" lang="ta">நீ அருகில் இருந்தால்<br />வார்த்தைகள் தேவையில்லை...<br />அமைதிக்குக் கூட<br />ஒரு அர்த்தம் கிடைக்கிறது. 🩷</p>
             <p className="poem-sign handwritten">— உனக்காக</p>
             <span className="pressed-flower" aria-hidden="true">✿</span>
           </article>
           <article className="poem-note poem-note-small note-blush">
-            <p className="tamil poem-tamil" lang="ta">உன் சிரிப்பில்<br />என் நாளின் வெளிச்சம்.</p>
+            <p className="tamil poem-tamil" lang="ta">உன் சிரிப்பில்<br />என் நாளின் வெளிச்சம். 🩷</p>
             <p className="poem-sign handwritten">— Me ♡</p>
           </article>
           <article className="poem-note poem-note-small note-lilac">
-            <p className="tamil poem-tamil" lang="ta">தூரம் இருந்தாலும்<br />நினைவில் நீ அருகில்.</p>
+            <p className="tamil poem-tamil" lang="ta">தூரம் இருந்தாலும்<br />நினைவில் நீ அருகில். 💜</p>
             <p className="poem-sign handwritten">— always</p>
             <span className="mini-flower" aria-hidden="true">✿</span>
           </article>
@@ -387,17 +439,25 @@ function Discoveries() {
             <div className="random-photo" role="img" aria-label="A couple sharing a sunset" />
             <p className="handwritten random-caption" aria-live="polite">{memoryLines[memoryIndex]}</p>
             <button className="text-button" type="button" onClick={showAnotherMemory}>Show another <span>↗</span></button>
+            <div className="random-doodle handwritten" aria-hidden="true"><span>✧</span> little moments, kept forever <span>♡</span></div>
           </article>
           <article className={`discovery-card secret-card${secretOpen ? " is-open" : ""}`}>
             <div className="secret-heading"><span aria-hidden="true">◎</span><h2>Secret Button</h2></div>
             <p className="handwritten">Don’t click this... <span>↘</span></p>
             <button className="secret-button" type="button" onClick={() => setSecretOpen(true)}>I knew you would <span>♡</span></button>
             <p className="secret-message" aria-live="polite">If I had to choose again, I’d still choose you. <span>♡</span></p>
+            <div className="secret-doodle handwritten" aria-hidden="true"><span>♡</span> a little secret, kept with love <span>♡</span></div>
           </article>
-          <button className="discovery-card miss-card" type="button" onClick={() => setLetterOpen(true)}>
+          <article className="discovery-card miss-card">
             <span className="envelope" aria-hidden="true">✉</span><span className="miss-title">Open When You Miss Me</span><span className="miss-heart">♡</span>
+            <span className="miss-art" aria-hidden="true">♡<span>♡</span></span>
+            <p className="miss-card-note handwritten">For the days you wish I were a little closer.</p>
+            <div className="miss-card-actions">
+              <a className="miss-website-link" href={missYouWebsiteUrl} target="_blank" rel="noopener noreferrer">Visit our special page <span aria-hidden="true">↗</span></a>
+              <button className="miss-letter-button" type="button" onClick={() => setLetterOpen(true)}>Read your little letter <span aria-hidden="true">♡</span></button>
+            </div>
             <span className="miss-hint handwritten">a little note, just for you</span>
-          </button>
+          </article>
         </div>
       </div>
       {letterOpen && (
