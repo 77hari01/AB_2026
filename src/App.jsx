@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 const missYouWebsiteUrl = "https://ah-world.vercel.app/";
-const surpriseRevealAt = new Date("2026-10-11T00:00:00+05:30").getTime();
+const surpriseRevealAt = new Date("2026-10-12T00:00:00+05:30").getTime();
 
 function getSecondsUntilReveal() {
   return Math.max(0, Math.ceil((surpriseRevealAt - Date.now()) / 1000));
