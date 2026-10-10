@@ -2,6 +2,11 @@ import React, { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 const missYouWebsiteUrl = "https://ah-world.vercel.app/";
+const surpriseRevealAt = new Date("2026-10-12T00:00:00+05:30").getTime();
+
+function getSecondsUntilReveal() {
+  return Math.max(0, Math.ceil((surpriseRevealAt - Date.now()) / 1000));
+}
 
 const numberedPhotos = Array.from({ length: 9 }, (_, index) => {
   const number = index + 1;
@@ -110,12 +115,12 @@ function parseMemories(text) {
 }
 
 const momentCards = [
-  ["⌣", "Your Smile", "நீ சிரிக்கும்போது\nஉலகமே கொஞ்சம் அழகாகிறது...", "It’s my favourite part of the day."],
-  ["〰", "Your Voice", "உன் குரல் கேட்டாலே\nமனம் அமைதியாகிறது.", "My favourite notification."],
-  ["♡", "Your Little Habits", "நீ செய்யும் சின்னச் சின்ன\nவிஷயங்கள் எல்லாம்...", "The little things you don’t even realize you do."],
-  ["✿", "The Way You Care", "என்னை நினைக்கும்\nஉன் மனசு...", "You always think about others."],
+  ["⌣", "Your Smile", "நீ சிரிக்கும்போது\nஉலகமே கொஞ்சம் அழகாகிறது...🤍", "It’s my favourite part of the day."],
+  ["〰", "Your Voice", "உன் குரல் கேட்டாலே\nமனம் அமைதியாகிறது.😌", "My favourite notification."],
+  ["♡", "Your Little Habits", "நீ செய்யும் சின்னச் சின்ன\nவிஷயங்கள் எல்லாம்...🥰", "The little things you don’t even realize you do."],
+  ["✿", "The Way You Care", "என்னை நினைக்கும்\nஉன் மனசு...🤍", "You always think about others."],
   ["◉", "Your Eyes", "இரு விழிகளினுள் தொலைந்தது\n என் இதயம் ❤️", "They say everything without words."],
-  ["✧", "Just You", "நீயாக இருப்பதே\nஎனக்குப் பிடித்தது.", "Because you are you, and that’s enough."],
+  ["✧", "Just You", "நீயாக இருப்பதே\nஎனக்குப் பிடித்தது.💘", "Because you are you, and that’s enough."],
 ];
 
 function parseTimeline(text) {
@@ -754,6 +759,51 @@ function Timeline() {
 }
 
 export default function App() {
+  const [secondsRemaining, setSecondsRemaining] = useState(getSecondsUntilReveal);
+
+  useEffect(() => {
+    const interval = window.setInterval(() => {
+      setSecondsRemaining(getSecondsUntilReveal());
+    }, 1000);
+
+    return () => window.clearInterval(interval);
+  }, []);
+
+  if (secondsRemaining > 0) {
+    const days = Math.floor(secondsRemaining / 86400);
+    const hours = Math.floor((secondsRemaining % 86400) / 3600);
+    const minutes = Math.floor((secondsRemaining % 3600) / 60);
+    const seconds = secondsRemaining % 60;
+
+    return (
+      <main className="countdown-gate">
+        <section className="countdown-card" aria-labelledby="countdown-title">
+          <p className="countdown-kicker">A little surprise is waiting</p>
+          <div className="countdown-heart" aria-hidden="true">♡</div>
+          <h1 id="countdown-title">Our special moment is almost here</h1>
+          <p className="countdown-date">12 October 2026 <span>·</span> 12:00 AM IST</p>
+          <div className="countdown-clock" role="timer" aria-label={`${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds remaining`}>
+            {[
+              ["Days", days],
+              ["Hours", hours],
+              ["Minutes", minutes],
+              ["Seconds", seconds],
+            ].map(([label, value]) => (
+              <div className="countdown-unit" key={label}>
+                <span>{String(value).padStart(2, "0")}</span>
+                <small>{label}</small>
+              </div>
+            ))}
+          </div>
+          <p className="countdown-surprise">One Special Surprise for You <span>❤️❤️❤️</span></p>
+          <p className="countdown-signoff">Made with all my love <span aria-hidden="true">♡</span></p>
+        </section>
+        <span className="countdown-floating-heart countdown-floating-heart-one" aria-hidden="true">♡</span>
+        <span className="countdown-floating-heart countdown-floating-heart-two" aria-hidden="true">♡</span>
+      </main>
+    );
+  }
+
   return (
     <>
       <Header />

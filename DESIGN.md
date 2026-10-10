@@ -2,6 +2,8 @@
 
 A complete React long-scroll website inspired by the supplied scrapbook reference. The visual language brings together sunset photography, tactile cream paper, loose Polaroids, handwritten English accents, Tamil typography, muted blush/lilac details, and a contrasting midnight-blue night section. It is one connected page, with the vertical timeline as the final section.
 
+Before 12 October 2026 at 12:00 AM India Standard Time, the site displays a live countdown gate and opens automatically when the reveal time arrives.
+
 ## Build phases
 
 ### Phase 1 — React foundation
