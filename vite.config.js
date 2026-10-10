@@ -1,4 +1,4 @@
-import { existsSync, readdirSync } from "node:fs";
+import { readdirSync, existsSync } from "node:fs";
 import path from "node:path";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
@@ -9,6 +9,9 @@ const timelineDirectory = path.resolve(
   "assets",
   "Timeline"
 );
+
+const timelineManifestPath =
+  "assets/Timeline/timeline-manifest.json";
 
 const supportedImageExtensions = new Set([
   ".avif",
@@ -21,11 +24,7 @@ const supportedImageExtensions = new Set([
 function createTimelineManifest() {
   const photos = {};
 
-  // Avoid crashing the build if the folder is missing.
   if (!existsSync(timelineDirectory)) {
-    console.warn(
-      `Timeline directory not found: ${timelineDirectory}`
-    );
     return JSON.stringify(photos);
   }
 
@@ -68,15 +67,16 @@ function timelineManifestPlugin() {
 
         if (
           request.method !== "GET" ||
-          pathname !== "/assets/Timeline/timeline-manifest.json"
+          pathname !== `/${timelineManifestPath}`
         ) {
-          next();
-          return;
+          return next();
         }
 
         try {
-          response.statusCode = 200;
-          response.setHeader("Content-Type", "application/json");
+          response.setHeader(
+            "Content-Type",
+            "application/json"
+          );
           response.setHeader("Cache-Control", "no-store");
           response.end(createTimelineManifest());
         } catch (error) {
@@ -88,7 +88,7 @@ function timelineManifestPlugin() {
     generateBundle() {
       this.emitFile({
         type: "asset",
-        fileName: "assets/Timeline/timeline-manifest.json",
+        fileName: timelineManifestPath,
         source: createTimelineManifest(),
       });
     },
