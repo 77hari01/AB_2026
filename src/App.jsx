@@ -118,44 +118,56 @@ const momentCards = [
   ["✧", "Just You", "நீயாக இருப்பதே\nஎனக்குப் பிடித்தது.", "Because you are you, and that’s enough."],
 ];
 
-const timelineEvents = [
-  {
-    date: "12 JAN 2024",
-    title: "♡ First Chat",
-    description: <>A simple hello<br />changed everything.</>,
-    icon: "✉",
-    side: "left",
-  },
-  {
-    date: "15 JAN 2024",
-    title: "♡ First Call",
-    description: <>Your voice became<br />my favourite sound.</>,
-    icon: "♫",
-    side: "right",
-  },
-  {
-    date: "10 MAR 2024",
-    title: "♡ First Meet",
-    description: <>Finally meeting the person<br />behind all those messages.</>,
-    icon: "⌖",
-    side: "left",
-    photo: true,
-  },
-  {
-    date: "ALL THE LITTLE DAYS",
-    title: "♡ Special Moments",
-    description: <>Little memories, laughs,<br />fights, and everything between.</>,
-    icon: "✧",
-    side: "right",
-  },
-  {
-    date: "TODAY",
-    title: "♡ Us",
-    description: <>Same story.<br />New memories.<br />Still us.</>,
-    icon: "∞",
-    side: "left",
-  },
-];
+function parseTimeline(text) {
+  const events = [];
+  const introduction = [];
+  let currentEvent;
+
+  for (const rawLine of text.replace(/^\uFEFF/, "").split(/\r?\n/)) {
+    const line = rawLine.trim();
+    const heading = line.match(/^(\d+)\s*[.)-]\s*(.+)$/);
+    if (heading) {
+      currentEvent = {
+        number: Number(heading[1]),
+        title: heading[2].trim(),
+        description: [],
+      };
+      events.push(currentEvent);
+    } else if (currentEvent && line) {
+      currentEvent.description.push(line.replace(/^[-*•]\s*/, ""));
+    } else if (line) {
+      introduction.push(line);
+    }
+  }
+
+  return {
+    introduction: introduction.join(" "),
+    events: events.map((event) => ({
+      ...event,
+      description: event.description.join("\n"),
+    })),
+  };
+}
+
+function TimelinePhoto({ photo, title, onOpen }) {
+  const [failed, setFailed] = useState(false);
+
+  if (failed) {
+    return <p className="event-photo-error" role="status">Could not load this photo.</p>;
+  }
+
+  return (
+    <button
+      className="event-polaroid timeline-photo-button"
+      type="button"
+      aria-label={`View larger: ${title} memory`}
+      onClick={(event) => onOpen({ src: photo.src, alt: `${title} memory`, title }, event.currentTarget)}
+    >
+      <img src={photo.src} alt="" loading="lazy" onError={() => setFailed(true)} />
+      <span>{title} ♡</span>
+    </button>
+  );
+}
 
 const memoryLines = [
   <>Just a reminder...<br />you make everything better.</>,
@@ -163,10 +175,6 @@ const memoryLines = [
   <>My favourite place<br />will always be beside you.</>,
   <>A small moment with you<br />is a big memory to me.</>,
 ];
-
-function imageUrl(id, width = 760) {
-  return `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${width}&q=85`;
-}
 
 function MemoryImage({ photo }) {
   const [source, setSource] = useState(photo.image);
@@ -610,51 +618,138 @@ function Discoveries() {
 }
 
 function Timeline() {
+  const [events, setEvents] = useState([]);
+  const [introduction, setIntroduction] = useState("");
+  const [photosByNumber, setPhotosByNumber] = useState({});
+  const [timelineError, setTimelineError] = useState("");
+  const [timelineLoading, setTimelineLoading] = useState(true);
+  const [selectedPhoto, setSelectedPhoto] = useState(null);
+  const photoButtonRef = useRef(null);
+  const photoViewerCloseRef = useRef(null);
+
+  useEffect(() => {
+    async function loadTimeline() {
+      try {
+        const [textResponse, photosResponse] = await Promise.all([
+          fetch("/assets/Timeline/TimeLine.txt"),
+          fetch("/assets/Timeline/timeline-manifest.json"),
+        ]);
+        if (!textResponse.ok) throw new Error(`Timeline text request failed with status ${textResponse.status}`);
+        if (!photosResponse.ok) throw new Error(`Timeline photo list request failed with status ${photosResponse.status}`);
+
+        const parsedTimeline = parseTimeline(await textResponse.text());
+        if (parsedTimeline.events.length === 0) throw new Error("No numbered timeline entries were found.");
+
+        setEvents(parsedTimeline.events);
+        setIntroduction(parsedTimeline.introduction);
+        setPhotosByNumber(await photosResponse.json());
+        setTimelineError("");
+      } catch (error) {
+        setTimelineError("Could not load the timeline. Check TimeLine.txt and its numbered photos.");
+        console.error("Could not load the timeline:", error);
+      } finally {
+        setTimelineLoading(false);
+      }
+    }
+
+    loadTimeline();
+  }, []);
+
+  useEffect(() => {
+    if (!selectedPhoto) return undefined;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    photoViewerCloseRef.current?.focus();
+    function closeOnEscape(event) {
+      if (event.key === "Escape") setSelectedPhoto(null);
+    }
+    window.addEventListener("keydown", closeOnEscape);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", closeOnEscape);
+      photoButtonRef.current?.focus();
+    };
+  }, [selectedPhoto]);
+
   return (
-    <section className="timeline-section" id="timeline" aria-labelledby="timeline-title">
-      <div className="timeline-top">
-        <div className="section-shell">
-          <div className="section-heading timeline-heading">
-            <div>
-              <p className="eyebrow">from strangers to forever</p>
-              <h2 id="timeline-title">Our Timeline <span>♡</span></h2>
-              <p className="section-intro">From strangers to forever...<br />what a beautiful journey it has been.</p>
+    <>
+      <section className="timeline-section" id="timeline" aria-labelledby="timeline-title">
+        <div className="timeline-top">
+          <div className="section-shell">
+            <div className="section-heading timeline-heading">
+              <div>
+                <p className="eyebrow">from strangers to forever</p>
+                <h2 id="timeline-title">Our Timeline <span>♡</span></h2>
+                <p className="section-intro">{introduction || "From strangers to forever... what a beautiful journey it has been."}</p>
+              </div>
+              <p className="handwritten timeline-aside">and every little<br />thing in between <span>♡</span></p>
             </div>
-            <p className="handwritten timeline-aside">and every little<br />thing in between <span>♡</span></p>
           </div>
         </div>
-      </div>
-      <div className="timeline-body">
-        <div className="timeline-rail" aria-hidden="true" />
-        <div className="timeline-start" aria-hidden="true">♡</div>
-        <div className="timeline-list">
-          {timelineEvents.map((event) => (
-            <article className={`timeline-event event-${event.side}`} key={event.date}>
-              <span className="timeline-dot" aria-hidden="true" />
-              <div className="event-card">
-                <p className="event-date">{event.date}</p>
-                <h3>{event.title}</h3>
-                <p>{event.description}</p>
-                <span className="event-icon" aria-hidden="true">{event.icon}</span>
-                {event.photo && (
-                  <div className="event-polaroid">
-                    <img src={imageUrl("photo-1516589178581-6cd7833ae3b2", 480)} alt="A couple meeting in the evening" loading="lazy" />
-                    <span>the day we met ♡</span>
-                  </div>
-                )}
-              </div>
-            </article>
-          ))}
+        <div className="timeline-body">
+          <div className="timeline-rail" aria-hidden="true" />
+          <div className="timeline-start" aria-hidden="true">♡</div>
+          <div className="timeline-list">
+            {timelineLoading ? (
+              <p className="timeline-error" role="status">Loading our story...</p>
+            ) : timelineError ? (
+              <p className="timeline-error" role="status">{timelineError}</p>
+            ) : events.map((event, index) => (
+              <article className={`timeline-event event-${index % 2 === 0 ? "left" : "right"}`} key={event.number}>
+                <span className="timeline-dot" aria-hidden="true" />
+                <div className="event-card">
+                  <p className="event-date">MEMORY {String(event.number).padStart(2, "0")}</p>
+                  <h3>♡ {event.title}</h3>
+                  {event.description && <p className="event-description">{event.description}</p>}
+                  <span className="event-icon" aria-hidden="true">♡</span>
+                  {photosByNumber[event.number] && (
+                    <TimelinePhoto
+                      photo={photosByNumber[event.number]}
+                      title={event.title}
+                      onOpen={(photo, button) => {
+                        photoButtonRef.current = button;
+                        setSelectedPhoto(photo);
+                      }}
+                    />
+                  )}
+                </div>
+              </article>
+            ))}
+          </div>
+          <div className="timeline-end" aria-hidden="true">∞</div>
+          <div className="timeline-finale">
+            <p className="handwritten finale-title">To Be Continued... <span>♡</span></p>
+            <p className="tamil finale-tamil" lang="ta">இன்னும் நிறைய நினைவுகள் இருக்கிறது...</p>
+            <span className="finale-sprig" aria-hidden="true">✿</span>
+          </div>
         </div>
-        <div className="timeline-end" aria-hidden="true">∞</div>
-        <div className="timeline-finale">
-          <p className="handwritten finale-title">To Be Continued... <span>♡</span></p>
-          <p className="tamil finale-tamil" lang="ta">இன்னும் நிறைய நினைவுகள் இருக்கிறது...</p>
-          <span className="finale-sprig" aria-hidden="true">✿</span>
-        </div>
-      </div>
-      <footer className="site-footer"><a href="#home">You <span>&amp;</span> Me ♡</a><p>made of little moments, kept forever</p></footer>
-    </section>
+        <footer className="site-footer"><a href="#home">You <span>&amp;</span> Me ♡</a><p>made of little moments, kept forever</p></footer>
+      </section>
+      {selectedPhoto && createPortal(
+        <div className="memory-viewer-backdrop" role="presentation" onClick={() => setSelectedPhoto(null)}>
+          <section
+            className="memory-viewer"
+            role="dialog"
+            aria-modal="true"
+            aria-label={`Photo viewer: ${selectedPhoto.alt}`}
+            onClick={(event) => event.stopPropagation()}
+          >
+            <button
+              ref={photoViewerCloseRef}
+              className="memory-viewer-close"
+              type="button"
+              aria-label="Close photo"
+              onClick={() => setSelectedPhoto(null)}
+            >×</button>
+            <img src={selectedPhoto.src} alt={selectedPhoto.alt} />
+            <p className="memory-viewer-caption">{selectedPhoto.title} ♡</p>
+          </section>
+        </div>,
+        document.body,
+      )}
+    </>
   );
 }
 

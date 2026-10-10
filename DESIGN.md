@@ -26,14 +26,16 @@ A complete React long-scroll website inspired by the supplied scrapbook referenc
 - Song card is wired for a local audio file. Add `our-song.mp3` to `public/assets/our-song.mp3`; the card will play it from the existing path. Update its title/artwork in `SongCard` and `.song-art`.
 
 ### Phase 6 — Vertical timeline and conclusion
-- The final section uses one straight central vertical rail and circular markers; events alternate left and right.
-- The final marker leads to “To Be Continued...” and the closing Tamil line. Update dates, copy, or optional first-meet photo in `timelineEvents` in `src/App.jsx`.
+- The final section loads its introduction and numbered events from `public/assets/Timeline/TimeLine.txt`. Put each event on a line beginning with its number and a period (for example, `10. First trip`); following lines become that event's description until the next numbered event.
+- Add a matching image in `public/assets/Timeline/` with the same number followed by a period (for example, `10. First trip.jpg`). JPEG, PNG, WebP, and AVIF images are supported. Events alternate sides automatically; events without a matching image show as text-only cards.
+- The final marker leads to “To Be Continued...” and the closing Tamil line.
 
 ## Project files
 
 - `src/App.jsx` — React page and interactive section components.
 - `src/main.jsx` — React entry point.
 - `src/styles.css` — color/type tokens, paper/night surfaces, responsive layouts, and interactions.
+- `vite.config.js` — generates a timeline photo manifest from numbered images in the public timeline folder for development and production builds.
 - `index.html` — Vite document shell, metadata, and web fonts.
 
 ## Run

@@ -251,9 +251,13 @@ img { display: block; width: 100%; }
 .event-date { margin: 0 0 6px; color: #a1777c; font-size: 9px; font-weight: 600; letter-spacing: .15em; }
 .event-card h3 { margin: 0 0 9px; font: 500 24px/1 var(--script); }
 .event-card > p:not(.event-date) { margin: 0; color: #68616a; font: 12px/1.7 var(--sans); }
+.event-description { white-space: pre-line; }
+.timeline-error, .event-photo-error { color: #8c555f; font-size: 13px; text-align: center; }
 .event-icon { position: absolute; top: 16px; right: 17px; color: #b68283; font-size: 15px; }
 .timeline-event:nth-child(odd) .event-icon { right: auto; left: 17px; }
 .event-polaroid { width: 125px; margin: 13px 0 0 auto; padding: 5px 5px 0; background: white; box-shadow: 0 4px 13px rgb(54 41 39 / 12%); transform: rotate(-3deg); }
+.timeline-photo-button { display: block; border: 0; color: inherit; cursor: zoom-in; text-align: center; }
+.timeline-photo-button:focus-visible { outline: 2px solid #bd7781; outline-offset: 4px; }
 .event-polaroid img { height: 75px; object-fit: cover; }
 .event-polaroid span { display: block; padding: 5px 0 6px; font: 14px var(--script); }
 .event-right .event-polaroid { margin-left: 0; }
