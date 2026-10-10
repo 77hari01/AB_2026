@@ -1,82 +1,120 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
-const missYouWebsiteUrl = "https://example.com";
+const missYouWebsiteUrl = "https://ah-world.vercel.app/";
 
-const photos = [
+const numberedPhotos = Array.from({ length: 9 }, (_, index) => {
+  const number = index + 1;
+  const filename = `memories-${number}.jpg`;
+  return {
+    id: `memory-${number}`,
+    number,
+    category: ["special", "us", "random", "random", "special", "us", "special", "random", "us"][index],
+    filename,
+    image: `/assets/memories/${filename}`,
+    alt: `Memory photo ${number}`,
+    className: `memory-${String(number).padStart(2, "0")}`,
+  };
+});
+
+const photoFolders = [
   {
-    caption: "That sunset... ♡",
+    folder: "Special Days",
     category: "special",
-    filename: "memory-01.jpg",
-    image: "/assets/memories/memory-01.jpg",
-    fallback: imageUrl("photo-1516589178581-6cd7833ae3b2"),
-    alt: "A couple together in warm evening light",
-    className: "memory-01",
+    label: "Special Day",
+    files: [
+      "IMG-20251127-WA0001.jpg",
+      "IMG-20260501-WA0009.jpg",
+      "IMG-20260628-WA0006.jpg",
+      "IMG_20260425_204436.jpg",
+      "IMG_20261004_145348.jpg",
+      "IMG_20261004_145730.jpg",
+      "Screenshot_2024-12-31-19-54-26-351_com.instagram.android.jpg",
+      "Screenshot_2025-02-12-00-01-46-643_com.instagram.android.jpg",
+      "Screenshot_2025-02-23-23-53-07-687_com.instagram.android.jpg",
+      "Screenshot_2025-10-13-11-33-55-136_com.whatsapp.jpg",
+      "Screenshot_2026-02-24-22-01-51-039_com.whatsapp.jpg",
+      "Screenshot_2026-08-24-11-46-46-619_com.google.android.apps.photos.jpg",
+    ],
   },
   {
-    caption: "Forever & always ♡",
-    category: "us",
-    filename: "memory-02.jpg",
-    image: "/assets/memories/memory-02.jpg",
-    fallback: imageUrl("photo-1518199266791-5375a83190b7"),
-    alt: "Two hands held together",
-    className: "memory-02",
-  },
-  {
-    caption: "Our little world ♡",
+    folder: "Random Moments",
     category: "random",
-    filename: "memory-03.jpg",
-    image: "/assets/memories/memory-03.jpg",
-    fallback: imageUrl("photo-1500375592092-40eb2168fd21"),
-    alt: "A quiet blue sea beneath an open sky",
-    className: "memory-03",
+    label: "Random Moment",
+    files: [
+      "IMG-20250918-WA0001.jpg",
+      "IMG_20261004_145655.jpg",
+      "IMG_20261004_145821.jpg",
+      "IMG_20261004_145924.jpg",
+      "IMG_20261004_150031.jpg",
+      "IMG_20261004_184525.jpg",
+    ],
   },
   {
-    caption: "No plans, just us",
-    category: "random",
-    filename: "memory-04.jpg",
-    image: "/assets/memories/memory-04.jpg",
-    fallback: imageUrl("photo-1522673607200-164d1b6ce486"),
-    alt: "A couple walking together",
-    className: "memory-04",
-  },
-  {
-    caption: "Late night talks ♡",
-    category: "special",
-    filename: "memory-05.jpg",
-    image: "/assets/memories/memory-05.jpg",
-    fallback: imageUrl("photo-1495474472287-4d71bcdd2085"),
-    alt: "Coffee and a slow morning together",
-    className: "memory-05",
-  },
-  {
-    caption: "For no reason at all",
+    folder: "Us",
     category: "us",
-    filename: "memory-06.jpg",
-    image: "/assets/memories/memory-06.jpg",
-    fallback: imageUrl("photo-1490750967868-88aa4486c946"),
-    alt: "Soft flowers in afternoon light",
-    className: "memory-06",
+    label: "Us",
+    files: [
+      "IMG_20250821_143156.jpg",
+      "IMG_20260307_170623.jpg",
+      "IMG_20260502_165819.jpg",
+      "IMG_20260627_202239.jpg",
+      "IMG_20260717_214604.jpg",
+      "IMG_20260829_201538.jpg",
+      "IMG_20260926_182146.jpg",
+      "IMG_20261004_181034.jpg",
+      "IMG_20261004_181252.jpg",
+      "Screenshot_2026-10-04-22-35-50-230_com.miui.gallery-edit.jpg",
+    ],
   },
-  ...Array.from({ length: 3 }, (_, index) => {
-    const number = index + 7;
-    const filename = `memory-${String(number).padStart(2, "0")}.jpg`;
-    return {
-      caption: `A little memory #${String(number).padStart(2, "0")}`,
-      category: ["special", "random", "us"][index % 3],
-      filename,
-      image: `/assets/memories/${filename}`,
-      alt: `Photo memory ${number}`,
-      className: `memory-${String(number).padStart(2, "0")}`,
-    };
-  }),
 ];
+
+const folderPhotos = photoFolders.flatMap(({ folder, category, label, files }) =>
+  files.map((filename, index) => ({
+    id: `${category}-${index + 1}`,
+    category,
+    filename,
+    image: `/assets/memories/${encodeURIComponent(folder)}/${encodeURIComponent(filename)}`,
+    alt: `${label} photo ${index + 1}`,
+    caption: `${label} · ${String(index + 1).padStart(2, "0")} ♡`,
+    className: `folder-memory-${category}-${index + 1}`,
+  })),
+);
+
+const photos = [...numberedPhotos, ...folderPhotos];
+
+const collageSlots = [
+  { column: 1, row: 2, angle: -5, offset: 10 },
+  { column: 2, row: 1, angle: -4, offset: -7 },
+  { column: 3, row: 1, angle: 2, offset: 1 },
+  { column: 4, row: 1, angle: 3, offset: 18 },
+  { column: 2, row: 2, angle: -2, offset: 8 },
+  { column: 3, row: 2, angle: 4, offset: 21 },
+];
+
+function parseMemories(text) {
+  const poems = [];
+  let currentPoem;
+
+  for (const line of text.replace(/^\uFEFF/, "").split(/\r?\n/)) {
+    const numberedLine = line.match(/^\s*(\d+)\s*[.)-]\s*(.*)$/);
+    if (numberedLine) {
+      currentPoem = { number: Number(numberedLine[1]), text: numberedLine[2].trim() };
+      poems.push(currentPoem);
+    } else if (currentPoem && line.trim()) {
+      currentPoem.text = `${currentPoem.text}\n${line.trim()}`;
+    }
+  }
+
+  return poems.filter((poem) => poem.text);
+}
 
 const momentCards = [
   ["⌣", "Your Smile", "நீ சிரிக்கும்போது\nஉலகமே கொஞ்சம் அழகாகிறது...", "It’s my favourite part of the day."],
   ["〰", "Your Voice", "உன் குரல் கேட்டாலே\nமனம் அமைதியாகிறது.", "My favourite notification."],
   ["♡", "Your Little Habits", "நீ செய்யும் சின்னச் சின்ன\nவிஷயங்கள் எல்லாம்...", "The little things you don’t even realize you do."],
   ["✿", "The Way You Care", "என்னை நினைக்கும்\nஉன் மனசு...", "You always think about others."],
-  ["◉", "Your Eyes", "இரு விழிகளினுள் தொலைந்த\nது என் இதயம் ❤️", "They say everything without words."],
+  ["◉", "Your Eyes", "இரு விழிகளினுள் தொலைந்தது\n என் இதயம் ❤️", "They say everything without words."],
   ["✧", "Just You", "நீயாக இருப்பதே\nஎனக்குப் பிடித்தது.", "Because you are you, and that’s enough."],
 ];
 
@@ -187,7 +225,7 @@ function Header() {
 function Hero() {
   return (
     <section className="hero" id="home" aria-labelledby="hero-title">
-      <div className="hero-photo" role="img" aria-label="A couple watching the last light of a sunset" />
+      <div className="hero-photo" role="img" aria-label="A woman standing beneath the trees" />
       <div className="hero-shade" />
       <div className="hero-stars" aria-hidden="true">·　✦　　　·　　　　✧　　·</div>
       <div className="hero-copy">
@@ -206,6 +244,14 @@ function Hero() {
 
 function Memories() {
   const [filter, setFilter] = useState("all");
+  const [poemsByNumber, setPoemsByNumber] = useState({});
+  const [poemError, setPoemError] = useState("");
+  const [selectedPhoto, setSelectedPhoto] = useState(null);
+  const photoButtonRef = useRef(null);
+  const viewerCloseRef = useRef(null);
+  const visiblePhotos = filter === "all"
+    ? numberedPhotos
+    : folderPhotos.filter((photo) => photo.category === filter);
   const categories = [
     ["all", "♡", "All"],
     ["special", "✧", "Special Days"],
@@ -213,14 +259,52 @@ function Memories() {
     ["us", "♡", "Us"],
   ];
 
+  useEffect(() => {
+    async function loadPoems() {
+      try {
+        const response = await fetch("/assets/memories/memories.txt");
+        if (!response.ok) throw new Error(`Request failed with status ${response.status}`);
+
+        const poems = parseMemories(await response.text());
+        if (poems.length === 0) throw new Error("No numbered poems were found.");
+
+        setPoemsByNumber(Object.fromEntries(poems.map(({ number, text }) => [number, text])));
+        setPoemError("");
+      } catch (error) {
+        setPoemError("Could not load the numbered poems from memories.txt.");
+        console.error("Could not load memories.txt:", error);
+      }
+    }
+
+    loadPoems();
+  }, []);
+
+  useEffect(() => {
+    if (!selectedPhoto) return undefined;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    viewerCloseRef.current?.focus();
+    function closeOnEscape(event) {
+      if (event.key === "Escape") setSelectedPhoto(null);
+    }
+    window.addEventListener("keydown", closeOnEscape);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", closeOnEscape);
+      photoButtonRef.current?.focus();
+    };
+  }, [selectedPhoto]);
+
   return (
-    <section className="memories paper-section" id="memories" aria-labelledby="memories-title">
+    <section className={`memories paper-section${filter === "all" ? " memories-all" : ""}`} id="memories" aria-labelledby="memories-title">
       <div className="section-shell">
         <div className="section-heading memories-heading">
           <div>
             <p className="eyebrow">collected, not curated</p>
             <h2 id="memories-title">Our Memories <span>♡</span></h2>
-            <p className="section-intro">Some moments are not just photos.<br />They are pieces of my heart.</p>
+            <p className="section-intro">Some moments are not just photos...<br />They are pieces of my heart.</p>
           </div>
           <p className="margin-note handwritten">little things<br />I want to keep <span>↙</span></p>
         </div>
@@ -252,14 +336,38 @@ function Memories() {
             ))}
           </div>
           <div className="polaroid-field">
-            {photos.map((photo, index) => (
+            {poemError && <p className="memory-error" role="status">{poemError}</p>}
+            {visiblePhotos.map((photo, index) => (
               <figure
-                className={`polaroid ${photo.className}${filter !== "all" && filter !== photo.category ? " is-hidden" : ""}`}
-                key={photo.className}
+                className={`polaroid ${photo.className}`}
+                key={photo.id}
+                style={{
+                  "--collage-column": collageSlots[index % collageSlots.length].column,
+                  "--collage-row": Math.floor(index / collageSlots.length) * 2 + collageSlots[index % collageSlots.length].row,
+                  "--collage-angle": `${collageSlots[index % collageSlots.length].angle}deg`,
+                  "--collage-offset": `${collageSlots[index % collageSlots.length].offset}px`,
+                }}
               >
                 {index % 3 !== 1 && <span className={`tape tape-${index}`} />}
-                <MemoryImage photo={photo} />
-                <figcaption>{photo.caption}</figcaption>
+                <button
+                  className="memory-photo-button"
+                  type="button"
+                  aria-label={`View larger: ${photo.alt}`}
+                  onClick={(event) => {
+                    photoButtonRef.current = event.currentTarget;
+                    setSelectedPhoto(photo);
+                  }}
+                >
+                  <MemoryImage photo={photo} />
+                </button>
+                {photo.number ? (
+                  <figcaption className="tamil" lang="ta">
+                    <span className="memory-number">{photo.number}.</span>{" "}
+                    {poemsByNumber[photo.number] || `கவிதை ${photo.number}`}
+                  </figcaption>
+                ) : (
+                  <figcaption className="folder-memory-caption">{photo.caption}</figcaption>
+                )}
               </figure>
             ))}
             <span className="field-scribble handwritten">collect moments,<br />not things <span>♡</span></span>
@@ -268,6 +376,29 @@ function Memories() {
           </div>
         </div>
       </div>
+      {selectedPhoto && createPortal(
+        <div className="memory-viewer-backdrop" role="presentation" onClick={() => setSelectedPhoto(null)}>
+          <section
+            className="memory-viewer"
+            role="dialog"
+            aria-modal="true"
+            aria-label={`Photo viewer: ${selectedPhoto.alt}`}
+            onClick={(event) => event.stopPropagation()}
+          >
+            <button ref={viewerCloseRef} className="memory-viewer-close" type="button" aria-label="Close photo" onClick={() => setSelectedPhoto(null)}>×</button>
+            <img src={selectedPhoto.image} alt={selectedPhoto.alt} />
+            {selectedPhoto.number ? (
+              <p className="tamil" lang="ta">
+                <span className="memory-number">{selectedPhoto.number}.</span>{" "}
+                {poemsByNumber[selectedPhoto.number] || `கவிதை ${selectedPhoto.number}`}
+              </p>
+            ) : (
+              <p className="memory-viewer-caption">{selectedPhoto.caption}</p>
+            )}
+          </section>
+        </div>,
+        document.body,
+      )}
     </section>
   );
 }

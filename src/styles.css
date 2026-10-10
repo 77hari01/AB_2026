@@ -50,7 +50,7 @@ img { display: block; width: 100%; }
 .hero { min-height: 700px; height: min(100svh, 920px); position: relative; overflow: hidden; color: #fff; background: #20293b; }
 .hero-photo, .hero-shade { position: absolute; inset: 0; }
 .hero-photo {
-  background: url("https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=2200&q=90") center 48% / cover no-repeat;
+  background: url("/assets/home.jpeg") 68% 48% / cover no-repeat;
   transform: scale(1.015);
 }
 .hero-shade { background: linear-gradient(90deg, rgb(14 22 38 / 75%) 0%, rgb(20 28 44 / 46%) 39%, rgb(20 28 44 / 7%) 100%), linear-gradient(0deg, rgb(12 17 30 / 48%) 0%, transparent 37%, rgb(13 20 34 / 20%) 100%); }
@@ -95,28 +95,16 @@ img { display: block; width: 100%; }
 .scrapbook-image { width: 100%; height: clamp(190px, 28vw, 315px); border: 8px solid #fffaf5; object-fit: cover; box-shadow: 0 9px 24px rgb(55 42 39 / 16%); transform: rotate(1deg); }
 .margin-note { margin: 0 35px 5px 0; color: #595260; font: 21px/1 var(--script); text-align: right; transform: rotate(5deg); }
 .margin-note span { color: var(--rose); font-size: 25px; }
-.memory-layout { display: grid; grid-template-columns: 175px 1fr; gap: 18px; align-items: start; }
-.memory-filters { display: flex; flex-direction: column; gap: 12px; padding-top: 23px; }
+.memory-layout { display: block; }
+.memory-filters { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 4px; }
 .filter-chip { padding: 11px 14px; border: 1px solid transparent; border-radius: 3px; background: rgb(255 255 255 / 47%); color: #615a61; cursor: pointer; font-size: 13px; text-align: left; transition: .2s; }
 .filter-chip span { padding-left: 9px; }
-.filter-chip:hover, .filter-chip.is-active { border-color: rgb(176 137 121 / 19%); background: #ead6ca; color: #3c3740; }
-.polaroid-field { position: relative; min-height: 520px; }
-.polaroid { position: absolute; padding: 10px 10px 0; background: #fffdfa; box-shadow: 0 13px 28px rgb(55 42 39 / 15%), 0 2px 4px rgb(55 42 39 / 9%); transition: transform .3s, opacity .25s, filter .25s; }
+.filter-chip:hover, .filter-chip.is-active { background: #e6c9b8; color: #3c3740; transform: translateX(3px); }
+.polaroid-field { position: relative; }
+.polaroid { padding: 10px 10px 0; background: #fffdfa; box-shadow: 0 13px 28px rgb(55 42 39 / 15%), 0 2px 4px rgb(55 42 39 / 9%); transition: transform .3s, opacity .25s, filter .25s; }
 .polaroid:hover { z-index: 4; transform: rotate(0) translateY(-8px) scale(1.04); }
 .polaroid img { height: 100%; object-fit: cover; }
 .polaroid figcaption { min-height: 42px; padding: 8px 4px 9px; font: 18px/1.1 var(--script); text-align: center; white-space: nowrap; }
-.photo-sunset { top: 10px; left: 19%; z-index: 2; width: 235px; height: 255px; transform: rotate(-6deg); }
-.photo-sunset img { height: 198px; }
-.photo-hands { top: 18px; left: 55%; z-index: 3; width: 205px; height: 236px; transform: rotate(4deg); }
-.photo-hands img { height: 180px; }
-.photo-sea { top: 100px; right: 0; width: 210px; height: 231px; transform: rotate(6deg); }
-.photo-sea img { height: 174px; }
-.photo-walk { top: 210px; left: 3%; width: 196px; height: 229px; transform: rotate(-9deg); }
-.photo-walk img { height: 174px; }
-.photo-coffee { top: 260px; left: 35%; z-index: 2; width: 202px; height: 230px; transform: rotate(3deg); }
-.photo-coffee img { height: 175px; }
-.photo-flowers { top: 300px; right: 14%; width: 176px; height: 208px; transform: rotate(-5deg); }
-.photo-flowers img { height: 153px; }
 .polaroid.is-hidden { pointer-events: none; opacity: 0; filter: blur(3px); }
 .tape { position: absolute; z-index: 4; top: -9px; left: calc(50% - 38px); width: 75px; height: 21px; background: #e5c5ba; clip-path: polygon(3% 8%, 96% 0, 100% 90%, 0 100%); opacity: .78; transform: rotate(-5deg); }
 .tape-2 { background: #e6d3b6; }
@@ -269,7 +257,7 @@ img { display: block; width: 100%; }
 .event-polaroid img { height: 75px; object-fit: cover; }
 .event-polaroid span { display: block; padding: 5px 0 6px; font: 14px var(--script); }
 .event-right .event-polaroid { margin-left: 0; }
-.timeline-end { bottom: 109px; width: 39px; height: 39px; font-size: 23px; }
+.timeline-end { position: relative; left: auto; bottom: auto; width: 39px; height: 39px; margin: 0 auto 12px; font-size: 23px; transform: none; }
 .timeline-finale { position: relative; padding: 20px 0 63px; text-align: center; }
 .finale-title { margin: 0 0 9px; color: #4c4050; font: 500 clamp(38px, 5vw, 58px)/1.1 var(--script); }
 .finale-title span { color: var(--rose); font-size: .67em; }
@@ -280,45 +268,64 @@ img { display: block; width: 100%; }
 .site-footer a span { color: var(--rose); }
 .site-footer p { margin: 0; color: #8c8281; font-size: 10px; letter-spacing: .05em; }
 
-/* Memory gallery slots use local files and keep empty photos visibly labeled. */
-.polaroid-field { min-height: 850px; padding: 20px 0 55px; }
-.polaroid-field .polaroid { position: absolute; display: block; height: auto; min-width: 0; padding: 9px 9px 0; }
-.polaroid-field .polaroid img, .polaroid-field .memory-placeholder { width: 100%; height: auto; aspect-ratio: 1 / .9; object-fit: cover; }
+/* A loose, flowing Polaroid grid keeps the memories visible while preserving the scrapbook feel. */
+.polaroid-field { display: grid; grid-auto-flow: dense; grid-template-columns: repeat(4, minmax(0, 1fr)); align-items: start; gap: 25px 22px; min-height: 0; padding: 20px 12px 36px; }
+.polaroid-field .polaroid { position: relative; inset: auto; z-index: 1; display: flex; min-width: 0; height: auto; flex-direction: column; align-self: start; margin: 0; padding: 9px 9px 0; }
+.memories-all .polaroid-field { padding-top: 24px; }
+.memories-all .polaroid-field .polaroid { box-shadow: 0 9px 22px rgb(55 42 39 / 20%), 0 2px 4px rgb(55 42 39 / 10%); }
+.polaroid-field .polaroid:hover { z-index: 4; transform: translateY(-7px) rotate(0) scale(1.035); }
+.memory-photo-button { display: block; width: 100%; padding: 0; border: 0; background: transparent; cursor: zoom-in; }
+.memory-photo-button:focus-visible { outline: 2px solid #bd7781; outline-offset: 3px; }
+.polaroid-field .memory-photo-button img, .polaroid-field .memory-photo-button .memory-placeholder { width: 100%; height: auto; aspect-ratio: 1 / .9; object-fit: cover; }
 .memory-placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 12px; background: linear-gradient(145deg, #f7e9e2, #ece1e8); color: #977784; text-align: center; }
 .memory-placeholder > span { color: #bf858d; font-size: 33px; }
 .memory-placeholder small { font-size: 10px; line-height: 1.7; }
 .memory-placeholder strong { color: #625260; font-size: 11px; font-weight: 600; }
-.polaroid-field .polaroid figcaption { min-height: 45px; padding: 9px 3px; overflow-wrap: anywhere; white-space: normal; }
-.polaroid-field .field-scribble, .polaroid-field .flower-doodle { position: absolute; }
-.polaroid-field .memory-01 { top: 28px; left: 18%; z-index: 2; width: 235px; transform: rotate(-6deg); }
-.polaroid-field .memory-02 { top: 18px; left: 56%; z-index: 3; width: 205px; transform: rotate(4deg); }
-.polaroid-field .memory-03 { top: 140px; right: 0; z-index: 1; width: 210px; transform: rotate(6deg); }
-.polaroid-field .memory-04 { top: 285px; left: 1%; z-index: 2; width: 196px; transform: rotate(-8deg); }
-.polaroid-field .memory-05 { top: 300px; left: 37%; z-index: 3; width: 202px; transform: rotate(3deg); }
-.polaroid-field .memory-06 { top: 390px; right: 13%; z-index: 2; width: 184px; transform: rotate(-5deg); }
-.polaroid-field .memory-07 { top: 505px; left: 13%; z-index: 1; width: 190px; transform: rotate(5deg); }
-.polaroid-field .memory-08 { top: 555px; left: 48%; z-index: 2; width: 205px; transform: rotate(-3deg); }
-.polaroid-field .memory-09 { top: 170px; left: 39%; z-index: 1; width: 182px; transform: rotate(-4deg); }
-.polaroid-field .polaroid:hover { z-index: 5; transform: translateY(-7px) rotate(0) scale(1.035); }
+.polaroid-field .polaroid figcaption { min-height: 62px; flex: 1 0 auto; padding: 9px 3px 11px; color: #39333d; font: 11px/1.65 var(--tamil); overflow-wrap: anywhere; text-align: center; white-space: pre-line; }
+.memories-all .polaroid-field .polaroid figcaption { min-height: 62px; padding: 8px 3px 10px; font-size: 11px; line-height: 1.65; }
+.polaroid-field .polaroid .folder-memory-caption { display: flex; min-height: 44px; align-items: center; justify-content: center; font: 18px/1.1 var(--script); }
+.memory-number { color: #a66e78; font-weight: 600; }
+.memory-error { position: absolute; z-index: 6; top: 0; left: 0; margin: 0; padding: 7px 10px; background: #fffdfa; color: #8d4e56; font-size: 11px; }
+.memory-viewer-backdrop { position: fixed; z-index: 50; inset: 0; display: grid; place-items: center; padding: 24px; background: rgb(11 17 29 / 78%); backdrop-filter: blur(5px); }
+.memory-viewer { position: relative; display: flex; width: min(900px, 100%); max-height: calc(100vh - 48px); flex-direction: column; align-items: center; gap: 12px; padding: 18px; background: #fffdfa; box-shadow: 0 18px 70px rgb(0 0 0 / 35%); }
+.memory-viewer > img { width: 100%; height: min(72vh, 760px); object-fit: contain; }
+.memory-viewer > p { max-width: 640px; margin: 0; color: #39333d; font: 15px/1.8 var(--tamil); text-align: center; white-space: pre-line; }
+.memory-viewer > .memory-viewer-caption { font: 21px/1.2 var(--script); }
+.memory-viewer-close { position: absolute; z-index: 1; top: -14px; right: -14px; width: 38px; height: 38px; border: 0; border-radius: 50%; background: #fff8f2; box-shadow: 0 2px 12px #0003; cursor: pointer; font-size: 25px; line-height: 1; }
+.polaroid-field .field-scribble { position: relative; right: auto; bottom: auto; grid-column: 1 / -1; justify-self: end; margin: 0 15px; }
+.polaroid-field .flower-doodle { z-index: 0; pointer-events: none; }
+.polaroid-field .polaroid:hover { z-index: 4; transform: translateY(-7px) rotate(0) scale(1.035); }
 .polaroid-field .polaroid.is-hidden { display: none; }
 
 @media (max-width: 800px) {
-  .polaroid-field { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px 16px; min-height: 0; padding: 18px 4px 60px; }
-  .polaroid-field .polaroid { position: relative; inset: auto; z-index: auto; width: 100%; }
-  .polaroid-field .polaroid:nth-of-type(odd) { transform: rotate(-2deg); }
-  .polaroid-field .polaroid:nth-of-type(even) { transform: rotate(2deg); }
+  .memories { padding: 76px 0 74px; }
+  .memories .section-shell { width: min(calc(100% - 48px), 640px); }
+  .memory-layout { grid-template-columns: 1fr; gap: 14px; }
+  .memory-filters { flex-direction: row; flex-wrap: wrap; gap: 7px; }
+  .filter-chip { width: auto; padding: 9px 12px; font-size: 11px; }
+  .polaroid-field { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px 16px; padding: 18px 4px 40px; }
+  .polaroid-field .polaroid { width: 100%; }
+  .polaroid-field .memory-photo-button img, .polaroid-field .memory-photo-button .memory-placeholder { height: auto; aspect-ratio: 1 / .9; }
+  .polaroid-field .polaroid:nth-of-type(7n + 1) .memory-photo-button img,
+  .polaroid-field .polaroid:nth-of-type(7n + 5) .memory-photo-button img { aspect-ratio: 1 / .82; }
+  .polaroid-field .polaroid figcaption { min-height: 62px; font-size: 11px; }
+  .polaroid-field .polaroid .folder-memory-caption { min-height: 42px; font-size: 18px; }
+  .polaroid-field .polaroid:nth-of-type(3n + 1) { transform: rotate(-2.5deg) translateY(3px); }
+  .polaroid-field .polaroid:nth-of-type(3n + 2) { transform: rotate(2.5deg) translateY(14px); }
+  .polaroid-field .polaroid:nth-of-type(3n) { transform: rotate(-1.5deg) translateY(-2px); }
   .polaroid-field .polaroid:hover { z-index: 4; transform: translateY(-5px) rotate(0) scale(1.025); }
+  .memory-viewer > img { height: min(68vh, 680px); }
 }
 
 @media (max-width: 700px) {
   .polaroid-field { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 12px; min-height: 0; padding: 12px 4px 52px; }
+  .memories-all .polaroid-field { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 12px; padding: 12px 4px 52px; }
 }
 
 @media (max-width: 800px) {
-  .polaroid-field { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .section-shell, .night-shell { width: min(calc(100% - 48px), 640px); }
   .hero { min-height: 670px; height: 90svh; max-height: 850px; }
-  .hero-photo { background-position: 58% center; }
+  .hero-photo { background-position: 72% center; }
   .hero-shade { background: linear-gradient(90deg, rgb(14 22 38 / 72%), rgb(20 28 44 / 26%)), linear-gradient(0deg, rgb(12 17 30 / 50%), transparent 50%); }
   .hero-copy { left: 8%; width: 84%; top: 51%; }
   .hero-note { top: auto; right: 7%; bottom: 18%; font-size: 18px; }
@@ -326,14 +333,7 @@ img { display: block; width: 100%; }
   .memory-layout { grid-template-columns: 1fr; }
   .memory-filters { flex-direction: row; flex-wrap: wrap; gap: 7px; padding: 0; }
   .filter-chip { padding: 9px 12px; font-size: 11px; }
-  .polaroid-field { min-height: 550px; }
-  .photo-sunset { left: 18%; }
-  .photo-hands { left: 58%; }
-  .photo-sea { top: 240px; right: 1%; }
-  .photo-walk { top: 265px; left: 4%; }
-  .photo-coffee { top: 298px; left: 37%; }
-  .photo-flowers { top: 389px; right: 19%; }
-  .field-scribble { right: 1%; bottom: 1px; }
+  .polaroid-field { min-height: 0; }
   .night-note { margin-right: 15px; }
   .moment-card { min-height: 220px; padding: 16px; }
   .poem-note-main { left: 0; width: 45%; }
@@ -362,16 +362,16 @@ img { display: block; width: 100%; }
   .main-nav a:last-child { border: 0; }
   .main-nav .nav-heart { color: var(--rose); }
   .hero { min-height: 700px; height: 100svh; max-height: 880px; }
-  .hero-photo { background-position: 60% center; }
+  .hero-photo { background-position: 54% center; }
   .hero-shade { background: linear-gradient(90deg, rgb(14 22 38 / 66%), rgb(20 28 44 / 15%)), linear-gradient(0deg, rgb(12 17 30 / 56%), transparent 54%); }
-  .hero-copy { top: 49%; left: 8%; width: 86%; transform: translateY(-42%); }
-  .hero h1 { max-width: 420px; margin-bottom: 25px; font-size: clamp(68px, 17vw, 91px); line-height: .84; }
-  .hero-tamil { font-size: 16px; }
-  .hero-intro { font-size: 12px; }
-  .hero-note { top: auto; right: 8%; bottom: 18%; }
+  .hero-copy { top: 12%; left: 6%; width: min(74%, 300px); transform: none; }
+  .hero h1 { max-width: 300px; margin-bottom: 15px; font-size: clamp(48px, 13vw, 58px); line-height: .88; }
+  .hero-tamil { margin-bottom: 11px; font-size: 13px; line-height: 1.6; }
+  .hero-intro { position: absolute; top: min(460px, 58svh); left: 0; margin: 0; font-size: 11px; line-height: 1.55; }
+  .hero-copy > .button { position: absolute; top: calc(min(460px, 58svh) + 56px); left: 0; }
+  .hero-note { top: auto; right: 7%; bottom: 15%; font-size: 17px; }
   .scroll-cue { bottom: 24px; left: 10%; transform: none; }
   .section-shell, .night-shell { width: calc(100% - 42px); }
-  .memories { padding: 76px 0 74px; }
   .section-heading { align-items: flex-start; }
   .section-heading h2 { font-size: 53px; }
   .section-intro { font-size: 12px; }
@@ -381,21 +381,15 @@ img { display: block; width: 100%; }
   .memories-heading { margin-bottom: 25px; }
   .memory-filters { margin-bottom: 4px; }
   .filter-chip { padding: 8px 10px; font-size: 10px; }
-  .polaroid-field { min-height: 610px; margin-top: 9px; }
-  .photo-sunset { top: 17px; left: 14%; width: 174px; height: 202px; }
-  .photo-sunset img { height: 151px; }
-  .photo-hands { top: 61px; right: 1%; left: auto; width: 151px; height: 180px; }
-  .photo-hands img { height: 132px; }
-  .photo-sea { top: 278px; right: 1%; width: 150px; height: 178px; }
-  .photo-sea img { height: 131px; }
-  .photo-walk { top: 238px; left: 0; width: 149px; height: 179px; }
-  .photo-walk img { height: 131px; }
-  .photo-coffee { top: 352px; left: 29%; width: 153px; height: 182px; }
-  .photo-coffee img { height: 134px; }
-  .photo-flowers { top: 458px; right: 0; width: 125px; height: 152px; }
-  .photo-flowers img { height: 104px; }
-  .polaroid figcaption { min-height: 35px; padding: 7px 2px; font-size: 15px; }
-  .field-scribble { right: 2%; bottom: 0; font-size: 17px; }
+  .polaroid-field { min-height: 0; margin-top: 9px; }
+  .polaroid-field .polaroid figcaption { min-height: 66px; padding: 8px 3px 10px; font-size: 11px; }
+  .polaroid-field .polaroid .folder-memory-caption { min-height: 44px; font-size: 17px; }
+  .polaroid-field .field-scribble { font-size: 17px; }
+  .memory-viewer-backdrop { padding: 16px; }
+  .memory-viewer { max-height: calc(100vh - 32px); padding: 12px; }
+  .memory-viewer > img { height: min(62vh, 580px); }
+  .memory-viewer > p { font-size: 12px; }
+  .memory-viewer-close { top: -11px; right: -8px; width: 34px; height: 34px; }
   .flower-one { top: 9px; left: 0; font-size: 34px; }
   .flower-two { display: none; }
   .night-section { min-height: 0; padding: 76px 0 64px; }
@@ -497,11 +491,13 @@ img { display: block; width: 100%; }
   .section-heading { gap: 16px; }
   .scrapbook-feature { grid-template-columns: minmax(0, 1fr); }
   .memory-layout { gap: 14px; }
-  .polaroid-field { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 12px; min-height: 0; padding: 12px 4px 52px; }
-  .polaroid, .photo-sunset, .photo-hands, .photo-sea, .photo-walk, .photo-coffee, .photo-flowers { position: relative; inset: auto; width: 100%; height: auto; min-width: 0; padding: 8px 8px 0; }
-  .polaroid:nth-of-type(odd) { transform: rotate(-2deg); }
-  .polaroid:nth-of-type(even) { transform: rotate(2deg); }
-  .polaroid img, .photo-sunset img, .photo-hands img, .photo-sea img, .photo-walk img, .photo-coffee img, .photo-flowers img { width: 100%; height: auto; aspect-ratio: 1 / .92; object-fit: cover; }
+  .polaroid-field { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 12px; min-height: 0; padding: 12px 4px 52px; }
+  .polaroid-field .polaroid:nth-of-type(odd) { transform: rotate(-2deg) translateY(3px); }
+  .polaroid-field .polaroid:nth-of-type(even) { transform: rotate(2deg) translateY(12px); }
+  .polaroid { width: 100%; height: auto; min-width: 0; padding: 8px 8px 0; }
+  .polaroid-field .polaroid:nth-of-type(odd) { transform: rotate(-2deg) translateY(3px); }
+  .polaroid-field .polaroid:nth-of-type(even) { transform: rotate(2deg) translateY(12px); }
+  .polaroid img { width: 100%; height: auto; aspect-ratio: 1 / .92; object-fit: cover; }
   .polaroid figcaption { min-height: 38px; padding: 8px 2px; font-size: clamp(14px, 3.7vw, 18px); white-space: normal; }
   .field-scribble { right: 8px; bottom: 3px; font-size: 18px; }
   .flower-two { display: none; }
@@ -523,6 +519,7 @@ img { display: block; width: 100%; }
   .timeline-body { width: calc(100% - 36px); padding-top: 24px; }
   .timeline-rail { top: 23px; bottom: 110px; left: 16px; transform: none; }
   .timeline-start, .timeline-end { left: 16px; transform: translateX(-50%); }
+  .timeline-end { left: auto; margin: 0 0 12px -1px; transform: none; }
   .timeline-list { padding: 42px 0 20px; }
   .timeline-event, .timeline-event:nth-child(odd), .timeline-event:nth-child(even) { width: 100%; min-height: 0; justify-content: flex-start; margin: 0; padding: 0 0 20px 42px; text-align: left; }
   .timeline-dot, .timeline-event:nth-child(odd) .timeline-dot, .timeline-event:nth-child(even) .timeline-dot { top: 22px; right: auto; left: 10px; }
@@ -540,12 +537,43 @@ img { display: block; width: 100%; }
 }
 
 @media (max-width: 420px) {
-  .polaroid-field { gap: 16px 12px; }
+  .polaroid-field { gap: 16px 12px;   }
+
+  @media (min-width: 801px) {
+    .polaroid-field {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-auto-flow: row;
+      gap: 26px 20px;
+      min-height: 0;
+      padding: 20px 12px 40px;
+    }
+
+    .polaroid-field .polaroid {
+      grid-column: var(--collage-column);
+      grid-row: var(--collage-row);
+      width: min(100%, 220px);
+      justify-self: center;
+      transform: rotate(var(--collage-angle)) translateY(var(--collage-offset));
+    }
+
+    .polaroid-field .polaroid:hover {
+      z-index: 10;
+      transform: translateY(-7px) rotate(0) scale(1.035);
+    }
+  }
+
+  @media (max-width: 800px) {
+    .polaroid-field .polaroid {
+      grid-column: auto;
+      grid-row: auto;
+    }
+  }
   html, body { min-width: 320px; }
   .section-shell, .night-shell { width: calc(100% - 32px); }
   .hero { min-height: 640px; }
-  .hero h1 { font-size: clamp(58px, 16vw, 72px); }
-  .hero-note { bottom: 15%; font-size: 17px; }
+  .hero-copy { top: 12%; left: 6%; width: 74%; transform: none; }
+  .hero h1 { max-width: 260px; font-size: clamp(46px, 13vw, 54px); }
+  .hero-note { bottom: 13%; font-size: 16px; }
   .section-heading h2, .timeline-heading h2 { font-size: clamp(42px, 12vw, 52px); }
   .filter-chip { padding: 8px 9px; }
   .moment-grid { grid-template-columns: minmax(0, 1fr); }

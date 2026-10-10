@@ -9,17 +9,16 @@ A complete React long-scroll website inspired by the supplied scrapbook referenc
 - Responsive navigation anchors to each part of the same long page.
 
 ### Phase 2 — Cinematic home
-- Full-height sunset hero, atmospheric image overlay, handwritten English heading, Tamil support text, and a discreet scroll call to action.
-- Hero image is currently a sample Unsplash photograph.
+- Full-height hero with the supplied local portrait at `public/assets/home.jpeg`, an atmospheric image overlay, handwritten English heading, Tamil support text, and a discreet scroll call to action.
 
 ### Phase 3 — Scrapbook memories
 - Filterable Polaroid collage with sample photographs, paper tape, captions, and hand-drawn flourishes.
 - A featured "A Scrapbook of Us" panel uses the supplied scrapbook artwork at `public/assets/scrapbook-cover.jpg`.
-- Add your photos as `memory-01.jpg` through `memory-09.jpg` in `public/assets/memories/`. The nine scrapbook slots load these files automatically; the first six keep their sample photos until you add yours. Gallery filters show only matching categories. Edit captions and categories in the `photos` array in `src/App.jsx`.
+- The All filter shows only the nine scrapbook cards, loading `memories-1.jpg` through `memories-9.jpg` from `public/assets/memories/` with each numbered poem from `memories.txt` shown on the matching card. Keep each poem on a line beginning with its number and a period (for example, `1. poem text`); continuation lines belong to that poem. The `Us`, `Special Days`, and `Random Moments` filters show all photos in their matching folders in a scattered, responsive Polaroid layout. Select any photo to open the large photo viewer; close it with the close button, backdrop, or Escape.
 
 ### Phase 4 — Midnight moments and paper poems
 - Six minimal cards on the starry dark section transition into cream-paper poetry notes.
-- Tamil text is marked with `lang="ta"` and uses the Noto Serif Tamil typeface. Replace the example lines directly in `src/App.jsx`.
+- Tamil text is marked with `lang="ta"` and uses the Noto Serif Tamil typeface. Update the numbered memory poems in `public/assets/memories/memories.txt`.
 - The "Open When You Miss Me" discovery card links to a website in a new tab; edit `missYouWebsiteUrl` in `src/App.jsx` to change its destination.
 
 ### Phase 5 — Personal discoveries
