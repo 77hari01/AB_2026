@@ -426,7 +426,7 @@ img { display: block; width: 100%; }
   .main-nav a:last-child { border: 0; }
   .main-nav .nav-heart { color: var(--rose); }
   .hero { min-height: 700px; height: 100svh; max-height: 880px; }
-  .hero-photo { background-position: 54% center; }
+  .hero-photo { background-position: 50% 20%; background-size: 130% auto; }
   .hero-shade { background: linear-gradient(90deg, rgb(14 22 38 / 66%), rgb(20 28 44 / 15%)), linear-gradient(0deg, rgb(12 17 30 / 56%), transparent 54%); }
   .hero-copy { top: 12%; left: 6%; width: min(74%, 300px); transform: none; }
   .hero h1 { max-width: 300px; margin-bottom: 15px; font-size: clamp(48px, 13vw, 58px); line-height: .88; }
@@ -605,7 +605,8 @@ img { display: block; width: 100%; }
   html, body { min-width: 320px; }
   .section-shell, .night-shell { width: calc(100% - 32px); }
   .hero { min-height: 640px; }
-  .hero-copy { top: 12%; left: 6%; width: 74%; transform: none; }
+  .hero-photo { background-position: 50% 28%; background-size: 140% auto; }
+  .hero-copy { top: 12%; left: 6%; width: 68%; transform: none; }
   .hero h1 { max-width: 260px; font-size: clamp(46px, 13vw, 54px); }
   .hero-note { bottom: 13%; font-size: 16px; }
   .section-heading h2, .timeline-heading h2 { font-size: clamp(42px, 12vw, 52px); }
